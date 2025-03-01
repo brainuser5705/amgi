@@ -11,6 +11,7 @@
         "16": "icons/icon-16.png"
     },
     "background": {
-        "service_worker": "context_menu.js"
+        "service_worker": "context_menu.js",
+        "type": "module"
     }
 }
