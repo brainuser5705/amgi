@@ -5,12 +5,17 @@
     "description": "Automatically add notes to your Anki deck",
     "content_scripts": [],
     "permissions": [
-        "contextMenus"
+        "contextMenus",
+        "tabGroups"
     ],
+    "host_permissions": ["https://developer.chrome.com/*"],
     "icons": {
         "16": "icons/icon-16.png"
     },
     "background": {
         "service_worker": "context_menu.js"
+    },
+    "action": {
+        "default_popup": "chatgbt.html"
     }
 }
