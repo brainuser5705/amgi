@@ -2,35 +2,11 @@
 
 const PAPAGO_BASE_URL = "https://papago.naver.com/?sk=ko&tk=en&st="
 
-// fetch this site
-// then we are "intercept" the request url from the network
-// make sure that the content type is audio/mpeg
-// send back the request url
-
-// make a listener...
-
 function getMediaFile(word) {
-    // get the button element and click it
-    // the listener should intercept the request...
-    console.log("We got the audio message.")
-    chrome.tabs.create({
-        url: PAPAGO_BASE_URL + word
-    }, (tab) => {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            func: () => {
-                // wait for the page to load...
-                setTimeout(function() {
-                    const toolbar = document.getElementById("btn-toolbar-source");
-                    const buttons = toolbar.getElementsByTagName("button");
-                    buttons[0].click();
 
-                    let definitionSpan = document.getElementById("txtTarget").children[0];
-                    console.log(definitionSpan.innerHTML);
-                }, 1000);
-            }
-        });
-    });
+    console.log("Getting media");
+
+    
 
     // chrome.runtime.sendMessage({action: "get-audio", word: word});
 }
@@ -112,4 +88,4 @@ function addNoteRequest(selection){
     // });
 }
 
-export { guiAddRequest, addNoteRequest };
+export { getMediaFile };
