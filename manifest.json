@@ -16,7 +16,10 @@
         "https://papago.naver.com/*"
     ],
     "icons": {
-        "16": "icons/icon-16.png"
+        "16": "icons/1-blue-star-16.png",
+        "32": "icons/1-blue-star-32.png",
+        "48": "icons/1-blue-star-48.png",
+        "128": "icons/1-blue-star-128.png"
     },
     "background": {
         "service_worker": "context_menu.js",
