@@ -3,10 +3,14 @@
     "name": "amki",
     "version": "1.0",
     "description": "Automatically add notes to your Anki deck",
-    "content_scripts": [],
+    "content_scripts": [
+    ],
     "permissions": [
         "contextMenus",
-        "tabGroups"
+        "tabGroups",
+        "activeTab",
+        "scripting",
+        "tabs"
     ],
     "host_permissions": ["https://developer.chrome.com/*"],
     "icons": {
