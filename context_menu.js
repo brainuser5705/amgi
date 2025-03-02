@@ -24,4 +24,10 @@ async function genericCallback(info, tab) {
 
 }
 
+chrome.webRequest.onCompleted.addListener((details) => {
+        console.log(details.url);
+    },  
+    { urls: ["https://papago.naver.com/apis/*"], types: ["media"] }
+);
+
 chrome.contextMenus.onClicked.addListener(genericCallback);
