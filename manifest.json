@@ -13,9 +13,7 @@
         "16": "icons/icon-16.png"
     },
     "background": {
-        "service_worker": "context_menu.js"
-    },
-    "action": {
-        "default_popup": "chatgbt.html"
+        "service_worker": "context_menu.js",
+        "type": "module"
     }
 }
