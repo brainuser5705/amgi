@@ -1,4 +1,4 @@
-import { guiAddRequest, addNoteRequest } from "./scripts/anki_connect.js";
+import { addNoteRequest } from "./scripts/anki_connect.js";
 
 // When the service worker starts running, it adds the context
 // menu when the user selects it.
@@ -8,24 +8,71 @@ chrome.runtime.onInstalled.addListener(function () {
         id: "selection",
         contexts: ["selection"]
     });
-
 });
+
+const PAPAGO_BASE_URL = "https://papago.naver.com/?sk=ko&tk=en&st="
+
+function getMediaFile(word) {
+
+    chrome.tabs.create({
+        url: PAPAGO_BASE_URL + word
+    }, (tab) => {
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: () => {
+                // wait for the page to load...
+                setTimeout(function() {
+                    const toolbar = document.getElementById("btn-toolbar-source");
+                    const buttons = toolbar.getElementsByTagName("button");
+                    buttons[0].click();
+
+                    let definitionSpan = document.getElementById("txtTarget").children[0];
+                    chrome.storage.local.set({"def": definitionSpan.innerHTML }, () => {
+                        console.log("put in defintion");
+                    });
+                }, 1000);
+            }
+        });
+    });
+
+}
 
 async function genericCallback(info, tab) {
 
-    console.log("fetching...");
+    chrome.tabs.query(
+        { active: true, lastFocusedWindow: true }, ([tab]) => {
+        chrome.storage.local.set({"last_tab": tab }, () => {
+            console.log("put in defintion");
+        });
+    });
 
-    // requestToAnki("deckNames", 6)
-    // .then((response) => response.json()) // promise that returns JSON value from response body
-    // .then((data) => console.log(data));  // gets the result
+    getMediaFile(info.selectionText);
 
-    // guiAddRequest(info.selectionText);
-    addNoteRequest(info.selectionText);
+    setTimeout(() => {
+        chrome.storage.local.get(["def", "url"], (result) => {
+            addNoteRequest(info.selectionText, result.def, result.url);
+        });
+    }, 3000);
 
 }
 
 chrome.webRequest.onCompleted.addListener((details) => {
-        console.log(details.url);
+
+        let queryOptions = { active: true, lastFocusedWindow: true };
+        chrome.tabs.query(queryOptions, ([tab]) => {
+            // `tab` will either be a `tabs.Tab` instance or `undefined`.
+            console.log("removing!");
+            chrome.tabs.remove(tab.id);
+        });
+
+        chrome.storage.local.set({"url": details.url }, () => {
+            console.log("put in url");
+        });
+
+        chrome.storage.local.get(["last_tab"], (result) => {
+            chrome.tabs.update(result.last_tab.id, { active: true });
+        });
+
     },  
     { urls: ["https://papago.naver.com/apis/*"], types: ["media"] }
 );
