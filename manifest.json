@@ -6,9 +6,14 @@
     "content_scripts": [],
     "permissions": [
         "contextMenus",
-        "tabGroups"
+        "webRequest",
+        "tabs",
+        "scripting",
+        "activeTab"
     ],
-    "host_permissions": ["https://developer.chrome.com/*"],
+    "host_permissions": [
+        "https://papago.naver.com/*"
+    ],
     "icons": {
         "16": "icons/icon-16.png"
     },
