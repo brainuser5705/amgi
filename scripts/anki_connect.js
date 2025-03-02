@@ -1,16 +1,3 @@
-// import { getMediaFile } from "./get_audio";
-
-const PAPAGO_BASE_URL = "https://papago.naver.com/?sk=ko&tk=en&st="
-
-function getMediaFile(word) {
-
-    console.log("Getting media");
-
-    
-
-    // chrome.runtime.sendMessage({action: "get-audio", word: word});
-}
-
 const ANKI_CONNECT_URL = "http://127.0.0.1:8765"
 
 /**
@@ -55,37 +42,35 @@ function guiAddRequest(selection){
 
 }
 
-function addNoteRequest(selection){
+function addNoteRequest(selection, definition, url){
 
-    getMediaFile(selection);
-
-    // requestToAnki("addNote", 6, {
-    //     "note": {
-    //         "deckName": "Default",
-    //         "modelName": "Basic",
-    //         "fields": {
-    //             "Front": selection,
-    //             "Back": "definition of" + selection
-    //         },
-    //         "options": {
-    //             "allowDuplicate": false,
-    //         },
-    //         "audio": [{
-    //             "url": "https://dict-dn.pstatic.net/v?_lsu_sa_=3ff83f5e5dc731467c9c514c3c8438fa7dca6dd508039fa16da2ba779b9c6151b15ab7646e450b71b9a36525d627d06b1c151fa8a169b6a535f5ab2f6cbb558ac9faf76ee926f64710f1906280bc37e720c9667dc99f9001929a0f6886089aa5c04857b8d3f682352b06f0de09f4bb3b3bfa20442ebc101cb33cdfd2614e76d8",
-    //             "filename": "test.mp3",
-    //             "fields": [
-    //                 "Front"
-    //             ]
-    //         }]
-    //     }
-    // })
-    // .then((response) => {
-    //     if (response.status == 200) {
-    //         console.log("Added a card");
-    //     }else{
-    //         console.log("User pressed no?");
-    //     }
-    // });
+    requestToAnki("addNote", 6, {
+        "note": {
+            "deckName": "Default",
+            "modelName": "Basic",
+            "fields": {
+                "Front": selection,
+                "Back": definition
+            },
+            "options": {
+                "allowDuplicate": false,
+            },
+            "audio": [{
+                "url": url,
+                "filename": selection + ".mp3",
+                "fields": [
+                    "Front"
+                ]
+            }]
+        }
+    })
+    .then((response) => {
+        if (response.status == 200) {
+            console.log("Added a card");
+        }else{
+            console.log("User pressed no?");
+        }
+    });
 }
 
-export { getMediaFile };
+export { addNoteRequest };
